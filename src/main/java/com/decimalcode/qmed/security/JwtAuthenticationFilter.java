@@ -1,9 +1,8 @@
 package com.decimalcode.qmed.security;
 
-import com.decimalcode.qmed.api.users.services.UserEntity;
-import com.decimalcode.qmed.exception.custom.ApiException;
+import com.decimalcode.qmed.api.users.service.UserEntity;
+import com.decimalcode.qmed.exception.ApiException;
 import com.decimalcode.qmed.response.ApiResponse;
-import com.decimalcode.qmed.response.ApiSecurityExceptionResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -11,6 +10,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -29,11 +29,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-import static com.decimalcode.qmed.misc.ApiGeneralSettings.*;
+import static com.decimalcode.qmed.config.ApiGeneralSettings.*;
+import static com.decimalcode.qmed.response.ApiSecurityExceptionResponse.sendErrorResponse;
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter implements ApiSecurityExceptionResponse {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final AntPathMatcher pathMatcher;
     private final JwtTokenService tokenService;
@@ -59,17 +60,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements Api
             }
             else {
                 sendErrorResponse(
-                    request,
-                    response,
-                    new ApiException("Http Status 403 - Access Denied")
+                    new ApiException("Http Status 403 - Access Denied"),
+                    response
                 );// pass on to next filter
             }
         }
         else {
             sendErrorResponse(
-                request,
-                response,
-                new ApiException("Http Status 403 - Access Denied")
+                new ApiException("Http Status 403 - Access Denied"),
+                response
             );// pass on to next filter
         }
     }
@@ -103,9 +102,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements Api
          */
         if(jwsPayload == null) {
             sendErrorResponse(
-                request,
-                response,
-                new ApiException("Token is either broken or expired")
+                new ApiException("Token is either broken or expired"),
+                response
             );
             return;
         }
@@ -133,9 +131,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements Api
                 else
                 {
                     sendErrorResponse(
-                        request,
-                        response,
-                        new ApiException("Token is either broken or expired")
+                        new ApiException("Token is either broken or expired"),
+                        response
                     );
                     return;
                 }
@@ -146,9 +143,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements Api
                 boolean isDropped = tokenService.dropToken(jwsPayload.getId());
                 if(!isDropped) {
                     sendErrorResponse(
-                        request,
-                        response,
-                        new ApiException("Token is either broken or does not exit")
+                        new ApiException("Token is either broken or does not exit"),
+                        response
                     );
                     return;
                 }
@@ -157,7 +153,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements Api
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.writeValue(
                     response.getWriter(),
-                    new ApiResponse<>("Logged out successfully", null)
+                    new ApiResponse<Void>(true, "Logged out successfully", HttpStatus.OK.name(), 200)
                 );
             }
 
@@ -177,7 +173,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements Api
         catch(Exception ex) {
             return null;
         }
-
     }
 
 }

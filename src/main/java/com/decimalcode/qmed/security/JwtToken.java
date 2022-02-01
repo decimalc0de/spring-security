@@ -1,6 +1,6 @@
 package com.decimalcode.qmed.security;
 
-import com.decimalcode.qmed.api.users.services.UserEntity;
+import com.decimalcode.qmed.api.users.service.UserEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -15,8 +15,8 @@ import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.UUID;
 
-import static com.decimalcode.qmed.misc.ApiGeneralSettings.JWT_SECRET_KEY;
-import static com.decimalcode.qmed.misc.ApiGeneralSettings.TOKEN_EXPIRATION_TIME;
+import static com.decimalcode.qmed.config.ApiGeneralSettings.JWT_SECRET_KEY;
+import static com.decimalcode.qmed.config.ApiGeneralSettings.TOKEN_EXPIRATION_TIME;
 
 @Entity
 @Getter

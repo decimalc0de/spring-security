@@ -1,0 +1,104 @@
+[
+  {
+    "name": "ulcer",
+    "counsellor": "Dr. Samuel Sandra",
+    "treatment": ["Omeprazole", "Cimeridine capsule"],
+    "dosage": {
+      "children": "1-15 years old, one tablet of 20mg two times daily",
+      "Adult": "15 years and above, two tablets of 20mg two times daily"
+    },
+    "description": "Caused by too much pepper or eating late hour"
+  },
+  {
+    "name": "diarrhea",
+    "counsellor": "Dr. Johnson Ahmed",
+    "treatment": ["Fragile and tetracycline"],
+    "dosage": {
+      "children": "2-5 years old, one tablet of 100mg daily",
+      "Adult": "5 years and above, body weight 40kg and above, two tablets of 100mg daily"
+    },
+    "description": "Caused by changing of environment or malaria infection"
+  },
+  {
+    "name": "pain",
+    "counsellor": "Dr. Steve Charles",
+    "treatment": ["Curefenac"],
+    "dosage": {
+      "children": "1-10 years old, one tablet of 100mg daily",
+      "Adult": "10 years and above, body weight 40kg and above, two tablets of 100mg daily"
+    },
+    "description": "Lifting of heavy weight, stress or over labouring your body"
+  },
+  {
+    "name": "headache",
+    "counsellor": "Dr. James Anderson",
+    "treatment": ["panadol", "paracetamol"],
+    "dosage": {
+      "children": "1-5 years old, one tablet of 500mg two times daily",
+      "Adult": "5-10 years and above, two tablets of 500mg two times daily"
+    },
+    "description": "Over thinking, hunger and stress"
+  },
+  {
+    "name": "diabetes",
+    "counsellor": "Dr. Samuel Sandra",
+    "treatment": ["Gluformin", "Granil"],
+    "dosage": {
+      "children": "None",
+      "Adult": "Two tablets of 50mg, two times daily - morning and evening"
+    },
+    "description": "Too much taking of starchy food or sugar"
+  },
+  {
+    "name": "rheumatism",
+    "counsellor": "Dr. A.O Gabriel",
+    "treatment": ["piroxicam", "predicure", "dexamethasone"],
+    "dosage": {
+      "children": "None",
+      "Adult": "Two tablets of 20mg, two times daily - morning and evening"
+    },
+    "description": "Caused by intake of bad water into the body system"
+  },
+  {
+    "name": "body-scratches ",
+    "counsellor": "Dr. Nancy Oforjebe",
+    "treatment": ["Simvastatin", "ketoconazole(with cream)"],
+    "dosage": {
+      "children": "One tablet of 200mg daily with cream after bathing",
+      "Adult": "16 years and above, Two tablets of 20mg with cream, two times daily - morning and evening"
+    },
+    "description": "Cause by changing of environment, making use of dirty toilet or bathroom, and not bathing regular"
+  },
+  {
+    "name": "cough",
+    "counsellor": "Dr. Sandra Ugochukwu",
+    "treatment": ["procold", "septrin"],
+    "dosage": {
+      "children": "1-5 years old, one tablet of 480mg daily",
+      "Adult": "5-10 years and above, two tablets of 480mg, two times daily - morning and evening"
+    },
+    "description": "Symptom of malaria or caused by dusty environment"
+  },
+  {
+    "name": "catarrh",
+    "counsellor": "Dr. Charles Soludo",
+    "treatment": ["procold", "septrin"],
+    "dosage": {
+      "children": "1-5 years old, one tablet of 480mg daily",
+      "Adult": "5-10 years and above, two tablets of 480mg, two times daily - morning and evening"
+    },
+    "description": "Symptom of malaria or caused by dusty environment"
+  },
+
+  {
+    "name": "malaria",
+    "counsellor": "Dr. Nancy Oforjebe",
+    "treatment": ["p-aladin", "lumartem"],
+    "dosage": {
+      "children": "1-5 years old, one tablet of 480mg daily",
+      "Adult": "5-10 years and above, body weight 40kg and above, two tablets of 480mg two times daily - morning and evening"
+    },
+    "description": "Symptom of malaria or caused by dusty environment"
+  }
+
+]

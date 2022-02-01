@@ -1,41 +1,63 @@
 package com.decimalcode.qmed.response;
 
+import com.decimalcode.qmed.config.ApplicationContextImpl;
+import com.decimalcode.qmed.exception.ApiException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
-public interface ApiSecurityExceptionResponse {
+public class ApiSecurityExceptionResponse implements AccessDeniedHandler, AuthenticationEntryPoint {
 
-    String REALM = "Bearer Realm security channel";
+    private static final String REALM = "Bearer Realm security channel";
 
-    default void sendErrorResponse(HttpServletRequest request,
-                                   HttpServletResponse response,
-                                   Exception exception ) {
+    @Override
+    public void commence(HttpServletRequest request,
+                         HttpServletResponse response,
+                         AuthenticationException authException) {
+        sendErrorResponse(authException, response);
+    }
+
+    @Override
+    public void handle(HttpServletRequest request,
+                       HttpServletResponse response,
+                       AccessDeniedException accessDeniedException) {
+        sendErrorResponse(accessDeniedException, response);
+    }
+
+    public static void sendErrorResponse(Exception exception,
+                                         HttpServletResponse response) {
         try {
             response.addHeader("WWW-Authentication", REALM);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-
             int status = response.getStatus();
-
-            ApiExceptionResponse apiExceptionRes = new ApiExceptionResponse();
-            apiExceptionRes.setError("HTTP Status " + status + " - " + REALM);
+            /*
+             * Get error message
+             */
             String exceptionMessage = exception.getMessage();
             if(exception instanceof BadCredentialsException){
                 exceptionMessage = "username or password is incorrect ";
             }
-            apiExceptionRes.setMessages(exceptionMessage);
-            apiExceptionRes.setPath(request.getRequestURI());
-            apiExceptionRes.setStatusCode(response.getStatus());
 
-            ObjectMapper gsonObjMapper = new ObjectMapper();
+            Map<String, String> errors = Map.of("Realm", "HTTP Status " + status + " - " + REALM);
+            ApiResponse<Void> apiResponse = new ApiResponse<>(
+                false, exceptionMessage, HttpStatus.UNAUTHORIZED.name(), 401
+            );
+            apiResponse.setErrors(errors);
 
-            String gsonString = gsonObjMapper.writeValueAsString(apiExceptionRes);
+            ObjectMapper objectMapper = ApplicationContextImpl.getBean(ObjectMapper.class);
+            String gsonString = objectMapper.writeValueAsString(apiResponse);
             response.getWriter().print(gsonString); // return json response as error
         }
-        catch (Exception e) { throw new RuntimeException("Internal server error"); }
+        catch (Exception e) { throw new ApiException("Internal server exception"); }
     }
 
 }

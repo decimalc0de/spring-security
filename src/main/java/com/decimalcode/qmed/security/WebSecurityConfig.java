@@ -1,8 +1,7 @@
 package com.decimalcode.qmed.security;
 
-import com.decimalcode.qmed.api.users.services.UserServiceImpl;
-import com.decimalcode.qmed.exception.AccessDeniedExceptionResponse;
-import com.decimalcode.qmed.exception.AuthenticationExceptionResponse;
+import com.decimalcode.qmed.api.users.service.UserServiceImpl;
+import com.decimalcode.qmed.response.ApiSecurityExceptionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.decimalcode.qmed.misc.ApiGeneralSettings.*;
+import static com.decimalcode.qmed.config.ApiGeneralSettings.*;
 
 @Configuration
 @EnableWebSecurity
@@ -40,8 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private final UserServiceImpl userService;
 
-    @Autowired
-    private JwtAuthenticationFilter jwtTokenVerifierFilter;
+    private final JwtAuthenticationFilter jwtTokenVerifierFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -55,8 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
             .and()
             .exceptionHandling()
-                .authenticationEntryPoint(new AuthenticationExceptionResponse())
-                .accessDeniedHandler(new AccessDeniedExceptionResponse())
+                .authenticationEntryPoint(new ApiSecurityExceptionResponse())
+                .accessDeniedHandler(new ApiSecurityExceptionResponse())
             .and()
             .formLogin().disable()
             .httpBasic().disable();

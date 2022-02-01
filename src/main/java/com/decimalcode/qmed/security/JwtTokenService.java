@@ -1,8 +1,7 @@
 package com.decimalcode.qmed.security;
 
-import com.decimalcode.qmed.api.users.services.UserEntity;
-import com.decimalcode.qmed.exception.custom.ApiException;
-import com.decimalcode.qmed.response.ApiSecurityExceptionResponse;
+import com.decimalcode.qmed.api.users.service.UserEntity;
+import com.decimalcode.qmed.exception.ApiException;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.decimalcode.qmed.misc.ApiGeneralSettings.AUTHORIZATION;
-import static com.decimalcode.qmed.misc.ApiGeneralSettings.TOKEN_BEARER;
+import static com.decimalcode.qmed.config.ApiGeneralSettings.AUTHORIZATION;
+import static com.decimalcode.qmed.config.ApiGeneralSettings.TOKEN_BEARER;
 
 @Service
-public class JwtTokenService implements ApiSecurityExceptionResponse {
+public class JwtTokenService {
 
     private final JwtTokenRepository tokenRepository;
     @Autowired

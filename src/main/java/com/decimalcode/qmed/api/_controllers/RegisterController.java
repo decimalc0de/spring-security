@@ -1,18 +1,18 @@
 package com.decimalcode.qmed.api._controllers;
 
-import com.decimalcode.qmed.api.registration.services.RegistrationRequest;
-import com.decimalcode.qmed.api.registration.services.RegistrationService;
-import com.decimalcode.qmed.api.token.TokenDto;
-import com.decimalcode.qmed.api.token.TokenEntity;
-import com.decimalcode.qmed.api.token.TokenServiceImpl;
-import com.decimalcode.qmed.api.users.services.UserEntity;
-import com.decimalcode.qmed.api.users.services.UserServiceImpl;
+import com.decimalcode.qmed.api.registration.service.RegistrationRequest;
+import com.decimalcode.qmed.api.registration.service.RegistrationService;
+import com.decimalcode.qmed.api.users.service.UserEntity;
 import com.decimalcode.qmed.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import static com.decimalcode.qmed.misc.ApiGeneralSettings.*;
+import static com.decimalcode.qmed.config.ApiGeneralSettings.API_ROOT_URL;
+import static com.decimalcode.qmed.config.ApiGeneralSettings.SIGN_UP_URL;
 
 
 @RestController
@@ -21,8 +21,6 @@ import static com.decimalcode.qmed.misc.ApiGeneralSettings.*;
 @RequestMapping(API_ROOT_URL + SIGN_UP_URL)
 public class RegisterController {
 
-    private final UserServiceImpl userService;
-    private final TokenServiceImpl tokenService;
     private final RegistrationService registrationService;
 
     @PostMapping
@@ -31,8 +29,15 @@ public class RegisterController {
     }
 
     @GetMapping("/verify-email-account")
-    public ApiResponse<TokenEntity> confirmRegistrationEmail(TokenDto token) {
-        return tokenService.confirmRegistrationEmailToken(token.getUser(), token.get());
+    public ApiResponse<Void> confirmUserEmail(@RequestParam String jwtToken) {
+        return registrationService.verifyLink(jwtToken);
+    }
+
+    @GetMapping("/six-digit/verify-email-account")
+    public ApiResponse<Void> confirmUserContact(HttpServletRequest  request,
+                                                       HttpServletResponse response,
+                                                       @RequestParam Integer sixDigitNumber) {
+        return registrationService.verifySixDigitNumber(request, sixDigitNumber);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.decimalcode.qmed.api._repositories;
 
-import com.decimalcode.qmed.api.users.services.UserEntity;
+import com.decimalcode.qmed.api.users.service.UserEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;

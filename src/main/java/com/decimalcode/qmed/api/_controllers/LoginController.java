@@ -1,13 +1,16 @@
 package com.decimalcode.qmed.api._controllers;
 
-import com.decimalcode.qmed.api.users.services.UserEntity;
-import com.decimalcode.qmed.api.users.services.UserCredential;
-import com.decimalcode.qmed.api.users.services.UserPrincipal;
-import com.decimalcode.qmed.exception.custom.ApiException;
+import com.decimalcode.qmed.api.users.service.UserCredential;
+import com.decimalcode.qmed.api.users.service.UserEntity;
+import com.decimalcode.qmed.api.users.service.UserPrincipal;
+import com.decimalcode.qmed.exception.ApiException;
 import com.decimalcode.qmed.response.ApiResponse;
-import com.decimalcode.qmed.security.*;
+import com.decimalcode.qmed.security.JwtToken;
+import com.decimalcode.qmed.security.JwtTokenService;
+import com.decimalcode.qmed.security.WebSecurityConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import static com.decimalcode.qmed.misc.ApiGeneralSettings.AUTHORIZATION;
-import static com.decimalcode.qmed.misc.ApiGeneralSettings.TOKEN_BEARER;
+import static com.decimalcode.qmed.config.ApiGeneralSettings.AUTHORIZATION;
+import static com.decimalcode.qmed.config.ApiGeneralSettings.TOKEN_BEARER;
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @RestController
@@ -39,7 +42,7 @@ public class LoginController {
 
     @PostMapping
     @SuppressWarnings("unused")
-    public ApiResponse<UserCredential> signIn(HttpServletRequest request,
+    public ApiResponse<UserEntity> signIn(HttpServletRequest request,
                                               HttpServletResponse response,
                                               @Valid @RequestBody UserCredential credentials){
         /*
@@ -93,7 +96,8 @@ public class LoginController {
             /*
              * Return Api-Response message
              */
-            return new ApiResponse<>("sign in successful", credentials);
+            String message = "sign in successful";
+            return new ApiResponse<>(true, message, user, HttpStatus.OK.name(), 200);
         }
         throw new ApiException("Internal server error");
     }
