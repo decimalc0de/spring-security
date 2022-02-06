@@ -13,7 +13,7 @@ public class ApiGeneralSettings {
     public static final int TOKEN_EXPIRATION_TIME = 60 * 5; // Token Expiration time - in minutes
     public static final String TOKEN_BEARER = "Bearer "; // Token - Bearer
     public static final String AUTHORIZATION = "Authorization"; // response 'Authorization' header
-    public static final String JWT_SECRET_KEY = "jwt_secret_key_benedicta5464_ML.Aa/18540_CR/17B/1876"; // JWT-SECRET
+    public static final String JWT_SECRET_KEY = "JWT_SECRET"; // JWT-SECRET
 
     public static String getFileNameWithoutExtension(String filename) {
         return filename == null ? "" : filename.substring(0, filename.lastIndexOf('.'));
